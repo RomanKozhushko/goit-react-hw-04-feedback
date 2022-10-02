@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Feedback from "components/feedBack/FeedbackOptions";
 import Statistics from "components/statistic/Statistics"
@@ -6,33 +6,41 @@ import Notification from './notification/Notification';
 import { SectionBox } from './section/sectionRender.styled';
 import{ Apca, ApcaName } from './App.styled'
 
-  export class App extends React.Component {
-    state = {
-      good: 0,
-      neutral: 0,
-      bad: 0,
-    }
 
-  onLeaveFeedback = stateName => {
-    this.setState(prevState => {
-      const value = prevState[stateName];
-        return {
-          [stateName]: value + 1
-         }
-       })
-     };
-   
-    render() {
-      const { good, neutral, bad, } = this.state;
-      const total = good + neutral + bad;
-      const options = Object.keys(this.state);
-      return (  
+    export const App = () => {
+const [good,setGood] = useState(0)
+const [neutral,setNeutral] = useState(0)
+const [bad,setBad] = useState(0)
+
+const onLeaveFeedback = acc => {
+  switch (acc){
+    case "good" :
+      setGood(prevGood => prevGood + 1)
+      break;
+    case "neutral" :
+      setNeutral(prevNeutral => prevNeutral + 1)
+      break;
+    case "bad" :
+      setBad(prevBad => prevBad + 1)
+      break;
+    default:
+      return
+  }
+};
+ 
+    const countTotalFeedback = () => {
+    return good + neutral + bad
+    };
+    const total = countTotalFeedback();
+    const options = Object.keys({ good, neutral, bad });
+      
+    return (  
         <Apca>
           <SectionBox title="Please leave feedback">
             <ApcaName>Please leave feedback</ApcaName>
             <Feedback
               options={options}
-              onLeaveFeedback={this.onLeaveFeedback}
+              onLeaveFeedback={onLeaveFeedback}
             />
           </SectionBox>
           <SectionBox title="Statistics">
@@ -48,7 +56,7 @@ import{ Apca, ApcaName } from './App.styled'
        
         )
     }
-}
+
     
 App.propTypes = {
     Good : PropTypes.number,
