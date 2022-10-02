@@ -33,7 +33,7 @@ const onLeaveFeedback = acc => {
     };
     const total = countTotalFeedback();
     const options = Object.keys({ good, neutral, bad });
-      
+  
     return (  
         <Apca>
           <SectionBox title="Please leave feedback">
